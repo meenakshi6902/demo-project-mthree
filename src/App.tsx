@@ -24,6 +24,7 @@ const App: React.FC = () => {
               <Link to="/" style={linkStyle}>HOME</Link>  
               <Link to="/rules" style={linkStyle}>RULES</Link>
               <Link to="/profile" style={linkStyle}>PROFILE</Link>
+              <Link to="/registration" style={linkStyle}>REGISTER</Link> {/* Added Register link */}
             </nav>
           </header>
 
