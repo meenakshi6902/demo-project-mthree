@@ -8,12 +8,12 @@ const App: React.FC = () => {
   const location = useLocation();
 
   // Show layout only on the home page
-  const showLayout = location.pathname === "/";
+  const isHomePage = location.pathname === "/";
 
   return (
     <div style={{ position: "relative", zIndex: 1 }}>
       {/* Show header & background only on the home page */}
-      {showLayout && (
+      {isHomePage && (
         <>
           <header style={headerStyle}>
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -24,10 +24,11 @@ const App: React.FC = () => {
               <Link to="/" style={linkStyle}>HOME</Link>  
               <Link to="/rules" style={linkStyle}>RULES</Link>
               <Link to="/profile" style={linkStyle}>PROFILE</Link>
-              <Link to="/registration" style={linkStyle}>REGISTER</Link> {/* Added Register link */}
+              <Link to="/registration" style={linkStyle}>REGISTER</Link>
             </nav>
           </header>
 
+          {/* Landing Page Content */}
           <div style={backgroundStyle}>
             <div style={titleStyle}>WELCOME TO THE BATTLES OF THE QUIZ LORDS</div>
             <div style={buttonContainerStyle}>
@@ -38,7 +39,7 @@ const App: React.FC = () => {
         </>
       )}
 
-      {/* Routes: Only load the respective page */}
+      {/* Load other pages via routes */}
       <div style={{ position: "relative", zIndex: 5 }}>
         <AppRoutes />
       </div>

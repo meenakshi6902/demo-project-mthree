@@ -1,60 +1,77 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 import registerImage from "../assets/register.jpg";
 
-
 const Registration: React.FC = () => {
   return (
-    <div style={styles.container}>
-      <div style={styles.formContainer}>
-        <h1 style={styles.title}>Sign Up</h1>
+    <Box
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        backgroundImage: `url(${registerImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Box
+        sx={{
+          padding: "30px",
+          borderRadius: "10px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          fontWeight: "bold",
+          fontSize: "2rem",
+          color: "white",
+          width: "350px",
+          boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.6)", // Increased blur, spread & opacity
+        }}
+      >
 
-        <label style={styles.label}>Username</label>
-        <input type="text" style={styles.input} placeholder="Enter username" />
+        <Typography variant="h4" sx={{ marginBottom: "20px", fontFamily: "serif" }}>
+          Sign Up
+        </Typography>
 
-        <label style={styles.label}>Email</label>
-        <input type="email" style={styles.input} placeholder="Enter email" />
+        <Typography sx={styles.label}>Username</Typography>
+        <TextField variant="outlined" fullWidth placeholder="Enter username" sx={styles.input} />
 
-        <label style={styles.label}>Password</label>
-        <input type="password" style={styles.input} placeholder="Enter password" />
+        <Typography sx={styles.label}>Email</Typography>
+        <TextField type="email" variant="outlined" fullWidth placeholder="Enter email" sx={styles.input} />
 
-        <button style={styles.submitButton}>Submit</button>
+        <Typography sx={styles.label}>Password</Typography>
+        <TextField type="password" variant="outlined" fullWidth placeholder="Enter password" sx={styles.input} />
 
-        <p style={styles.loginText}>
-          Already have an account? <Link to="/enter-arena"style={styles.loginLink}>Login</Link>
-        </p>
-      </div>
-    </div>
+        <Button variant="contained" sx={styles.submitButton}>
+          Submit
+        </Button>
+
+        <Typography sx={styles.loginText}>
+          Already have an account?{" "}
+          <Link to="/enter-arena" style={styles.loginLink}>
+            Login
+          </Link>
+        </Typography>
+
+        {/* Move to Home Page Button with Submit Button Styling */}
+        <Button
+          component={Link}
+          to="/"
+          variant="contained"
+          sx={styles.submitButton}
+        >
+          Move to Home Page
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    width: "100vw",
-    height: "100vh",
-    backgroundImage: `url(${registerImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  formContainer: {
-    background: "rgba(255, 255, 255, 0.8)",
-    padding: "30px",
-    borderRadius: "10px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "300px",
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
-  },
-  title: {
-    fontSize: "24px",
-    fontWeight: "bold",
-    marginBottom: "20px",
-  },
+const styles = {
   label: {
     alignSelf: "flex-start",
     fontSize: "14px",
@@ -62,12 +79,16 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginTop: "10px",
   },
   input: {
-    width: "100%",
-    padding: "10px",
     marginTop: "5px",
+    background: "white",
     borderRadius: "5px",
-    border: "1px solid #ccc",
-    fontSize: "16px",
+    "& .MuiOutlinedInput-root": {
+      height: "40px", // Reduced height
+      fontSize: "14px", // Slightly smaller text inside input
+      "& input": {
+        padding: "8px", // Adjust input padding
+      },
+    },
   },
   submitButton: {
     width: "100%",
@@ -77,13 +98,15 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: "white",
     fontSize: "16px",
     fontWeight: "bold",
-    border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+    "&:hover": {
+      background: "#3038a5",
+    },
   },
   loginText: {
     marginTop: "15px",
-    fontSize: "14px",
+    fontSize: "16px",
   },
   loginLink: {
     color: "#3B3FCB",
@@ -91,5 +114,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     cursor: "pointer",
   },
 };
+
 
 export default Registration;
