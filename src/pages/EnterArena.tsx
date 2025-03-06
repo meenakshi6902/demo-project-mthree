@@ -91,16 +91,17 @@
 // };
 
 // export default Login;
-
-
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { Box, Button, TextField, Typography, Alert } from "@mui/material";
+import axios from "axios"; // Import axios for API call
 
 import registerImage from "../assets/register.jpg";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate(); // For navigation after login
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,11 +109,30 @@ const Login: React.FC = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login Successful:", formData);
-    alert("Login Successful!");
-  };
+
+    try {
+        const response = await fetch("http://localhost:5000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error);
+        }
+
+        console.log("Login Successful:", data);
+        navigate("/dashboard"); // Redirect on success
+
+    } catch (error: any) {
+        setError(error.message); // Display error message in UI
+    }
+};
+
 
   return (
     <Box
@@ -144,6 +164,9 @@ const Login: React.FC = () => {
         <Typography variant="h4" sx={{ marginBottom: "20px", fontFamily: "serif" }}>
           Login
         </Typography>
+
+        {/* Display Error Message if Any */}
+        {error && <Alert severity="error">{error}</Alert>}
 
         {/* Form Start */}
         <form onSubmit={handleSubmit} style={{ width: "100%" }}>

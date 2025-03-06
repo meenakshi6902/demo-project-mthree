@@ -1,10 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Box, Button, TextField, Typography } from "@mui/material";
-
+import axios from "axios";
 import registerImage from "../assets/register.jpg";
 
 const Registration: React.FC = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    setError("");
+    setSuccessMessage("");
+
+    if (!formData.username || !formData.email || !formData.password) {
+      setError("All fields are required");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5000/auth/register", formData);
+      setSuccessMessage(response.data.message);
+      setFormData({ username: "", email: "", password: "" });
+    } catch (err: any) {
+      console.error("Registration error:", err); // Log the error to see more details
+      setError(err.response ? err.response.data.error : "Failed to register. Please try again.");
+    }
+  };
+
+
   return (
     <Box
       sx={{
@@ -29,24 +61,52 @@ const Registration: React.FC = () => {
           fontSize: "2rem",
           color: "white",
           width: "350px",
-          boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.6)", // Increased blur, spread & opacity
+          boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.6)",
         }}
       >
-
         <Typography variant="h4" sx={{ marginBottom: "20px", fontFamily: "serif" }}>
           Sign Up
         </Typography>
 
+        {error && <Typography sx={{ color: "red", marginBottom: "10px" }}>{error}</Typography>}
+        {successMessage && <Typography sx={{ color: "green", marginBottom: "10px" }}>{successMessage}</Typography>}
+
         <Typography sx={styles.label}>Username</Typography>
-        <TextField variant="outlined" fullWidth placeholder="Enter username" sx={styles.input} />
+        <TextField
+          name="username"
+          variant="outlined"
+          fullWidth
+          placeholder="Enter username"
+          sx={styles.input}
+          value={formData.username}
+          onChange={handleChange}
+        />
 
         <Typography sx={styles.label}>Email</Typography>
-        <TextField type="email" variant="outlined" fullWidth placeholder="Enter email" sx={styles.input} />
+        <TextField
+          name="email"
+          type="email"
+          variant="outlined"
+          fullWidth
+          placeholder="Enter email"
+          sx={styles.input}
+          value={formData.email}
+          onChange={handleChange}
+        />
 
         <Typography sx={styles.label}>Password</Typography>
-        <TextField type="password" variant="outlined" fullWidth placeholder="Enter password" sx={styles.input} />
+        <TextField
+          name="password"
+          type="password"
+          variant="outlined"
+          fullWidth
+          placeholder="Enter password"
+          sx={styles.input}
+          value={formData.password}
+          onChange={handleChange}
+        />
 
-        <Button variant="contained" sx={styles.submitButton}>
+        <Button variant="contained" sx={styles.submitButton} onClick={handleSubmit}>
           Submit
         </Button>
 
@@ -57,13 +117,7 @@ const Registration: React.FC = () => {
           </Link>
         </Typography>
 
-        {/* Move to Home Page Button with Submit Button Styling */}
-        <Button
-          component={Link}
-          to="/"
-          variant="contained"
-          sx={styles.submitButton}
-        >
+        <Button component={Link} to="/" variant="contained" sx={styles.submitButton}>
           Move to Home Page
         </Button>
       </Box>
@@ -83,10 +137,10 @@ const styles = {
     background: "white",
     borderRadius: "5px",
     "& .MuiOutlinedInput-root": {
-      height: "40px", // Reduced height
-      fontSize: "14px", // Slightly smaller text inside input
+      height: "40px",
+      fontSize: "14px",
       "& input": {
-        padding: "8px", // Adjust input padding
+        padding: "8px",
       },
     },
   },
@@ -114,6 +168,5 @@ const styles = {
     cursor: "pointer",
   },
 };
-
 
 export default Registration;
