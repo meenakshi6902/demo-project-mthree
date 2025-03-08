@@ -13,7 +13,20 @@ const EnterArena: React.FC = () => {
   );
 };
 
-const styles = { display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100vh" };
-const linkStyle = { textDecoration: "underline", color: "blue", margin: "10px", fontSize: "1.5em" };
+// Explicitly define styles as React.CSSProperties
+const styles: React.CSSProperties = { 
+  display: "flex", 
+  flexDirection: "column", 
+  justifyContent: "center", 
+  alignItems: "center", 
+  height: "100vh" 
+};
+
+const linkStyle: React.CSSProperties = { 
+  textDecoration: "underline", 
+  color: "blue", 
+  margin: "10px", 
+  fontSize: "1.5em" 
+};
 
 export default EnterArena;
